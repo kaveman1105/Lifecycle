@@ -12,19 +12,21 @@ import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.app.Activity;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends ActionBarActivity {
     int num1 = 23, num2 = 25, num3 = 29, num4 = 79, num5 = 86;
+    View v;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.container, new PlaceholderFragment())
+//                    .commit();
+//        }
 
         //get data for graph
         //using dummy data for now
@@ -64,21 +66,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
 
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.home, container, false);
-            return rootView;
-        }
-    }
 
     //Interface for passing data to the chart
     public class WebAppInterface {
