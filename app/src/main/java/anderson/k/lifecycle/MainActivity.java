@@ -1,5 +1,6 @@
 package anderson.k.lifecycle;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,12 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-
+@SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends ActionBarActivity {
-
+    int num1 = 23, num2 = 25, num3 = 29, num4 = 79, num5 = 86;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,12 +26,17 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        // enable javascript for webvieww
+        //get data for graph
+        //using dummy data for now
+
+
+        // enable javascript for webview
         WebView mywebview = (WebView)findViewById(R.id.wvHomeGraph);
         WebSettings websettings = mywebview.getSettings();
+        mywebview.addJavascriptInterface(new WebAppInterface(), "Android");
         websettings.setJavaScriptEnabled(true);
 
-
+        mywebview.loadUrl("file:///assets/chart.html");
     }
 
 
@@ -70,6 +77,34 @@ public class MainActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.home, container, false);
             return rootView;
+        }
+    }
+
+    //Interface for passing data to the chart
+    public class WebAppInterface {
+        @JavascriptInterface
+        public int getNum1() {
+            return num1;
+        }
+
+        @JavascriptInterface
+        public int getNum2() {
+            return num2;
+        }
+
+        @JavascriptInterface
+        public int getNum3() {
+            return num3;
+        }
+
+        @JavascriptInterface
+        public int getNum4() {
+            return num4;
+        }
+
+        @JavascriptInterface
+        public int getNum5() {
+            return num5;
         }
     }
 }
