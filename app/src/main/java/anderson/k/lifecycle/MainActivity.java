@@ -1,14 +1,17 @@
 package anderson.k.lifecycle;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends ActionBarActivity {
@@ -31,10 +34,14 @@ public class MainActivity extends ActionBarActivity {
         // enable javascript for webview
         WebView mywebview = (WebView)findViewById(R.id.wvHomeGraph);
         WebSettings websettings = mywebview.getSettings();
-        mywebview.addJavascriptInterface(new WebAppInterface(), "Android");
+        mywebview.addJavascriptInterface(new WebAppInterface(this), "Android");
         websettings.setJavaScriptEnabled(true);
 
-        mywebview.loadUrl("/assets/chart.html");
+        //mywebview.loadUrl("/assets/chart.html");
+        //mywebview.loadUrl("http://www.google.com");
+        Log.d("test","testing");
+
+        mywebview.loadUrl("file:///android_asset/sample.html");
     }
 
 
@@ -66,6 +73,19 @@ public class MainActivity extends ActionBarActivity {
 
     //Interface for passing data to the chart
     public class WebAppInterface {
+        Context mContext;
+
+        /** Instantiate the interface and set the context */
+        WebAppInterface(Context c) {
+            mContext = c;
+        }
+
+        /** Show a toast from the web page */
+        @JavascriptInterface
+        public void showToast(String toast) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+        }
+
         @JavascriptInterface
         public int getNum1() {
             return num1;
