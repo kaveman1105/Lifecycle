@@ -2,46 +2,68 @@ package anderson.k.lifecycle;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends ActionBarActivity {
-    int num1 = 23, num2 = 25, num3 = 29, num4 = 79, num5 = 86;
+    int num1 = 11, num2 = 12, num3 = 30, num4 = 4, num5 = 5;
     View v;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new PlaceholderFragment())
-//                    .commit();
-//        }
 
         //get data for graph
         //using dummy data for now
 
 
         // enable javascript for webview
-        WebView mywebview = (WebView)findViewById(R.id.wvHomeGraph);
+        final WebView mywebview = (WebView)findViewById(R.id.wvHomeGraph);
         WebSettings websettings = mywebview.getSettings();
         mywebview.addJavascriptInterface(new WebAppInterface(this), "Android");
         websettings.setJavaScriptEnabled(true);
 
-        //mywebview.loadUrl("/assets/chart.html");
-        //mywebview.loadUrl("http://www.google.com");
-        Log.d("test","testing");
+        //load bar graph
+        mywebview.loadUrl("file:///android_asset/sample2.html");
 
-        mywebview.loadUrl("file:///android_asset/sample.html");
+        mywebview.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView webView, String url) {
+                super.onPageFinished(webView, url);
+                Log.i("test", "width is " + mywebview.getWidth());
+            }
+        });
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        Log.i("test", "the window width is " + metrics.widthPixels);
+
+        Resources resources = getApplicationContext().getResources();
+        float dp = 984/(metrics.densityDpi/160f);
+
+        Log.i("test", "webview width after conversion is " + dp);
+
+        // disable scroll on touch
+//        mywebview.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return (event.getAction() == MotionEvent.ACTION_MOVE);
+//            }
+//        });
     }
 
 
